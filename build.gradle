@@ -22,6 +22,11 @@ dependencies {
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    //sistemas de plantilla:
+    implementation 'org.freemarker:freemarker:2.3.32'
+    implementation 'org.thymeleaf:thymeleaf:3.1.1.RELEASE'
+    implementation 'org.apache.velocity:velocity-engine-core:2.3'
 }
 
 application {
