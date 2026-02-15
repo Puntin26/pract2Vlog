@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Iniciar Sesión</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light d-flex align-items-center py-5" style="height: 100vh;">
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card shadow">
+        <div class="card-body p-4">
+          <h3 class="text-center mb-4">Acceso al Blog</h3>
+
+          <form method="post" action="/login">
+            <div class="mb-3">
+              <label for="username" class="form-label">Usuario</label>
+              <input type="text" class="form-control" id="username" name="username" required autofocus>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+
+            <div th:if="${error}" class="alert alert-danger py-2" role="alert">
+              Usuario o contraseña incorrectos.
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Entrar</button>
+            </div>
+          </form>
+
+          <div class="mt-3 text-center">
+            <a href="/">Volver al Inicio</a>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-3 text-muted">
+        <small>Prueba con: <b>admin</b> / <b>admin</b></small>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

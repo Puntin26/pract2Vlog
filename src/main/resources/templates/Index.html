@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog - Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/">Mi Blog Javalin</a>
+        <div class="navbar-nav ms-auto">
+
+            <a th:if="${session.usuario == null}" class="nav-link" href="/login">Iniciar Sesión</a>
+
+            <div th:if="${session.usuario != null}" class="d-flex align-items-center">
+                <span class="text-light me-3">Hola, <b th:text="${session.usuario.nombre}">Usuario</b></span>
+                <a th:if="${session.usuario.administrator || session.usuario.autor}" href="/crear-articulo" class="btn btn-sm btn-success me-2">Nuevo Artículo</a>
+                <a class="btn btn-sm btn-danger" href="/logout">Salir</a>
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h1 class="mb-4">Últimos Artículos</h1>
+
+            <div th:each="articulo : ${listaArticulos}" class="card mb-3">
+                <div class="card-body">
+                    <h2 class="card-title" th:text="${articulo.titulo}">Título del Artículo</h2>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        Autor: <span th:text="${articulo.autor.nombre}">Nombre</span> |
+                        Fecha: <span th:text="${articulo.fecha}">Fecha</span>
+                    </h6>
+                    <p class="card-text" th:text="${articulo.resumen}">
+                        Aquí va el resumen del cuerpo del artículo...
+                    </p>
+                    <a th:href="'/articulo/' + ${articulo.id}" class="btn btn-primary btn-sm">Leer más &rarr;</a>
+
+                    <div class="mt-2">
+                        <span th:each="tag : ${articulo.listaEtiquetas}" class="badge bg-secondary me-1" th:text="${tag.etiqueta}">Etiqueta</span>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${listaArticulos.isEmpty()}" class="alert alert-info">
+                No hay artículos publicados todavía. ¡Sé el primero en escribir uno!
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

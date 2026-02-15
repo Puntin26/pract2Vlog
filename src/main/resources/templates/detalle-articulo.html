@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${articulo.titulo}">Detalle Artículo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/">Volver al Inicio</a>
+        <a th:if="${session.usuario != null and (session.usuario.administrator or session.usuario.autor)}"
+           th:href="'/borrar-articulo/' + ${articulo.id}"
+           class="btn btn-danger btn-sm"
+           onclick="return confirm('Seguro que deseas borrar este artículo?');">Borrar Artículo</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <article class="mb-5">
+                <h1 class="fw-bolder mb-1" th:text="${articulo.titulo}">Título del Post</h1>
+                <div class="text-muted fst-italic mb-2">
+                    Publicado el <span th:text="${articulo.fecha}">Fecha</span> por <span th:text="${articulo.autor.nombre}">Autor</span>
+                </div>
+                <div class="mb-4">
+                    <span th:each="tag : ${articulo.listaEtiquetas}" class="badge bg-secondary me-1" th:text="${tag.etiqueta}">Tag</span>
+                </div>
+                <section class="mb-5">
+                    <p class="fs-5 mb-4" th:text="${articulo.cuerpo}">Cuerpo del artículo...</p>
+                </section>
+            </article>
+
+            <hr>
+
+            <section class="mb-5">
+                <div class="card bg-light">
+                    <div class="card-body">
+
+                        <div th:if="${session.usuario != null}" class="mb-4">
+                            <h5>Deja un comentario:</h5>
+                            <form method="post" th:action="'/articulo/' + ${articulo.id} + '/comentario'">
+                                <textarea class="form-control" rows="3" name="comentario" required placeholder="Escribe tu opinión..."></textarea>
+                                <button type="submit" class="btn btn-primary mt-2">Enviar Comentario</button>
+                            </form>
+                        </div>
+                        <div th:unless="${session.usuario != null}" class="alert alert-warning">
+                            Debes <a href="/login">iniciar sesión</a> para comentar.
+                        </div>
+
+                        <h5 class="mb-3">Comentarios (<span th:text="${articulo.listaComentarios.size()}">0</span>)</h5>
+
+                        <div th:each="comentario : ${articulo.listaComentarios}" class="d-flex mb-4">
+                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                            <div class="ms-3">
+                                <div class="fw-bold" th:text="${comentario.autor.nombre}">Nombre Comentador</div>
+                                <span th:text="${comentario.comentario}">Texto del comentario</span>
+                            </div>
+                        </div>
+
+                        <div th:if="${articulo.listaComentarios.isEmpty()}" class="text-muted text-center">
+                            No hay comentarios aún. Sé el primero!
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
