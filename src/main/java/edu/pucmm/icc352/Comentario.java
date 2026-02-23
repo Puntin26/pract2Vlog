@@ -1,10 +1,29 @@
 package edu.pucmm.icc352;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Comentario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ID automático
     private long id;
+
     private String comentario;
+
+    @ManyToOne // Relación: Muchos comentarios pueden pertenecer a UN solo Usuario
     private Usuario autor;
-    private Articulo articulo; // Relación inversa
+
+    @ManyToOne // Relación: Muchos comentarios pueden pertenecer a UN solo Artículo
+    private Articulo articulo;
+
+    // Constructor vacío obligatorio
+    public Comentario() {
+    }
 
     public Comentario(long id, String comentario, Usuario autor, Articulo articulo) {
         this.id = id;
@@ -13,7 +32,7 @@ public class Comentario {
         this.articulo = articulo;
     }
 
-    // Getters y Setters
+    // --- Getters y Setters ---
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 

@@ -1,39 +1,54 @@
 package edu.pucmm.icc352;
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Entity // 1. Se convierte en la tabla principal
 public class Articulo {
+
+    @Id // 2. Llave primaria
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ID automático
     private long id;
+
     private String titulo;
+
+    @Column(columnDefinition = "TEXT")
     private String cuerpo;
+
+    @ManyToOne // 4. Muchos artículos pertenecen a UN autor
     private Usuario autor;
+
     private Date fecha;
-    private List<Comentario> listaComentarios;
-    private List<Etiqueta> listaEtiquetas;
+
+    // 5. Relación: Un artículo tiene MUCHOS comentarios.
+    // cascade = CascadeType.ALL significa que si borras el artículo, se borran sus comentarios (¡super útil!)
+    // fetch = FetchType.EAGER carga los comentarios automáticamente cuando buscas el artículo.
+    @OneToMany(mappedBy = "articulo", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Comentario> listaComentarios = new ArrayList<>();
 
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Etiqueta> listaEtiquetas = new ArrayList<>();
+
+    // --- Constructores ---
+
+    // Constructor vacío (Obligatorio para JPA/Hibernate)
+    public Articulo() {
+    }
+
+    // Constructor normal (Para compatibilidad con tu código anterior)
     public Articulo(long id, String titulo, String cuerpo, Usuario autor, Date fecha) {
         this.id = id;
         this.titulo = titulo;
         this.cuerpo = cuerpo;
         this.autor = autor;
         this.fecha = fecha;
-        // Inicializamos las listas vacías
-        this.listaComentarios = new ArrayList<>();
-        this.listaEtiquetas = new ArrayList<>();
     }
 
-    //para recortar el texto a 70 caracteres
-    public String getResumen() {
-        if (cuerpo != null && cuerpo.length() > 70) {
-            return cuerpo.substring(0, 70) + "...";
-        }
-        return cuerpo;
-    }
+    // --- Getters y Setters ---
 
-    // Getters y Setters
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 
@@ -54,4 +69,13 @@ public class Articulo {
 
     public List<Etiqueta> getListaEtiquetas() { return listaEtiquetas; }
     public void setListaEtiquetas(List<Etiqueta> listaEtiquetas) { this.listaEtiquetas = listaEtiquetas; }
+
+    // Método extra para cumplir con el Requisito #3 (Resumen de 70 caracteres en el index)
+    public String getResumen() {
+        if (this.cuerpo == null) return "";
+        if (this.cuerpo.length() > 70) {
+            return this.cuerpo.substring(0, 70) + "...";
+        }
+        return this.cuerpo;
+    }
 }

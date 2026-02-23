@@ -16,6 +16,7 @@
 
             <div th:if="${session.usuario != null}" class="d-flex align-items-center">
                 <span class="text-light me-3">Hola, <b th:text="${session.usuario.nombre}">Usuario</b></span>
+                <a href="/perfil" class="btn btn-sm btn-info me-2 text-white">Mi Perfil</a>
                 <a th:if="${session.usuario.administrator || session.usuario.autor}" href="/crear-articulo" class="btn btn-sm btn-success me-2">Nuevo Artículo</a>
                 <a class="btn btn-sm btn-danger" href="/logout">Salir</a>
             </div>
@@ -28,6 +29,10 @@
     <div class="row">
         <div class="col-md-8 mx-auto">
             <h1 class="mb-4">Últimos Artículos</h1>
+            <div th:if="${etiquetaFiltro != null}" class="alert alert-warning d-flex justify-content-between align-items-center">
+                <span>Mostrando artículos con la etiqueta: <strong th:text="${etiquetaFiltro}"></strong></span>
+                <a href="/" class="btn btn-sm btn-outline-dark">Quitar filtro</a>
+            </div>
 
             <div th:each="articulo : ${listaArticulos}" class="card mb-3">
                 <div class="card-body">
@@ -42,7 +47,10 @@
                     <a th:href="'/articulo/' + ${articulo.id}" class="btn btn-primary btn-sm">Leer más &rarr;</a>
 
                     <div class="mt-2">
-                        <span th:each="tag : ${articulo.listaEtiquetas}" class="badge bg-secondary me-1" th:text="${tag.etiqueta}">Etiqueta</span>
+                        <a th:each="tag : ${articulo.listaEtiquetas}"
+                           th:href="'/etiquetas/' + ${tag.etiqueta}"
+                           class="badge bg-secondary me-1 text-decoration-none"
+                           th:text="${tag.etiqueta}">Etiqueta</a>
                     </div>
                 </div>
             </div>
@@ -51,6 +59,34 @@
                 No hay artículos publicados todavía. ¡Sé el primero en escribir uno!
             </div>
 
+            <nav th:if="${totalPaginas > 1}" aria-label="Navegación de páginas" class="mt-4 mb-5">
+                <ul class="pagination justify-content-center">
+
+                    <li class="page-item" th:classappend="${paginaActual == 1 ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{/(pagina=1)}" title="Ir a la primera página">&laquo;&laquo;</a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${paginaActual == 1 ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{/(pagina=${paginaActual - 1})}">Anterior</a>
+                    </li>
+
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(1, totalPaginas)}"
+                        th:if="${i >= paginaActual - 2 and i <= paginaActual + 2}"
+                        th:classappend="${i == paginaActual ? 'active' : ''}">
+                        <a class="page-link" th:href="@{/(pagina=${i})}" th:text="${i}">1</a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${paginaActual == totalPaginas ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{/(pagina=${paginaActual + 1})}">Siguiente</a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${paginaActual == totalPaginas ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{/(pagina=${totalPaginas})}" title="Ir a la última página">&raquo;&raquo;</a>
+                    </li>
+
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
