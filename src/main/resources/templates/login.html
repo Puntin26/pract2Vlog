@@ -24,6 +24,11 @@
               <input type="password" class="form-control" id="password" name="password" required>
             </div>
 
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="recordarme" name="recordarme">
+              <label class="form-check-label" for="recordarme">Recordarme por 7 días</label>
+            </div>
+
             <div th:if="${error}" class="alert alert-danger py-2" role="alert">
               Usuario o contraseña incorrectos.
             </div>
