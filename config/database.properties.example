@@ -1,0 +1,11 @@
+# Copiar este archivo como config/database.properties (no versionado)
+# para usar CockroachDB en lugar del H2 local.
+
+db.url=jdbc:postgresql://<host>:26257/defaultdb?sslmode=require
+# db.driver=org.postgresql.Driver
+
+db.user=<usuario>
+db.password=<password>
+
+# Opcional si quieres sobrescribir el dialecto por defecto cuando uses PostgreSQL.
+# hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect

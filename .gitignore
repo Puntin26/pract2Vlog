@@ -41,3 +41,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+# Configuración local de base de datos (no versionada)
+config/database.properties
