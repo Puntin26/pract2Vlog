@@ -4,17 +4,16 @@ import edu.pucmm.icc352.Articulo;
 import edu.pucmm.icc352.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 
 import java.util.List;
 
 public class GestionDb {
     private static GestionDb instancia;
-    private EntityManagerFactory emf;
+    private final EntityManagerFactory emf;
 
     // 1. En el constructor nos conectamos a la base de datos
     private GestionDb() {
-        emf = Persistence.createEntityManagerFactory("MiBlogPU");
+        emf = JpaProvider.getEntityManagerFactory();
         crearUsuarioAdminPorDefecto();
     }
 

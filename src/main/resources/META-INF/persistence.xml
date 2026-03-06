@@ -11,23 +11,12 @@
         <class>edu.pucmm.icc352.Comentario</class>
         <class>edu.pucmm.icc352.Etiqueta</class>
 
-        <!-- Para usar H2 en local, descomentar esta sección y comentar la sección de PostgreSQL
         <properties>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:~/blog_db;AUTO_SERVER=TRUE"/>
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="jakarta.persistence.jdbc.user" value="sa"/>
             <property name="jakarta.persistence.jdbc.password" value=""/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="hibernate.show_sql" value="true"/>
-        </properties>
-        -->
-
-        <properties>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://blog-icc352-22484.j77.aws-us-east-1.cockroachlabs.cloud:26257/defaultdb?sslmode=require"/>
-            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="jakarta.persistence.jdbc.user" value="willian"/>
-            <property name="jakarta.persistence.jdbc.password" value="gK8HwngdwY65FGK6D5D6UQ"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.hikari.connectionTimeout" value="30000"/>

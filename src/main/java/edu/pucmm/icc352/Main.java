@@ -10,39 +10,31 @@ import java.util.Base64;
 import io.javalin.http.UploadedFile;
 
 // 1. NUEVOS IMPORTS PARA LA BASE DE DATOS Y HIBERNATE
-import org.h2.tools.Server;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import java.sql.SQLException;
 
 // IMPORTS DE TUS CLASES
 import edu.pucmm.icc352.Articulo;
 import edu.pucmm.icc352.Usuario;
 import edu.pucmm.icc352.Comentario;
 import edu.pucmm.icc352.Etiqueta;
+import servicios.DbBootstrap;
 import servicios.GestionDb;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
-    // 2. AGREGAMOS 'throws SQLException' PORQUE EL SERVIDOR H2 PUEDE DAR ERROR AL INICIAR
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
 
         System.out.println("=============================================");
-        System.out.println("1. Iniciando servidor de Base de Datos H2...");
+        System.out.println("1. Iniciando bootstrap de Base de Datos...");
         System.out.println("=============================================");
-        // 3. INICIAMOS H2 EN MODO SERVIDOR (Puerto 9092) - Requisito #1
-       // Server.createTcpServer("-tcpPort", "9092", "-tcpAllowOthers").start();
+
+        DbBootstrap dbBootstrap = new DbBootstrap();
+        dbBootstrap.start();
+        Runtime.getRuntime().addShutdownHook(new Thread(dbBootstrap::close));
 
         System.out.println("=============================================");
-        System.out.println("2. Iniciando Hibernate (ORM) y creando tablas...");
-        System.out.println("=============================================");
-        // 4. CONECTAMOS HIBERNATE USANDO EL NOMBRE QUE PUSIMOS EN persistence.xml
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiBlogPU");
-
-        System.out.println("=============================================");
-        System.out.println("3. Tablas creadas con éxito. Iniciando Javalin...");
+        System.out.println("2. Iniciando Javalin...");
         System.out.println("=============================================");
 
 
